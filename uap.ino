@@ -25,7 +25,8 @@ float kelembaban;
 int gasValue;
 
 // Ambang batas
-const float BATAS_SUHU = 30.0;
+const float BATAS_SUHU_PANAS = 30.0;
+const float BATAS_SUHU_DINGIN = 15.0;
 const int BATAS_GAS = 500;
 
 void setup() {
@@ -75,9 +76,9 @@ void loop() {
   // ======================
   // Kontrol LED
   // ======================
-  if (gasValue > BATAS_GAS) {
+  if (suhu > BATAS_SUHU_DINGIN) {
     digitalWrite(LED_PIN, HIGH);
-    Serial.println("PERINGATAN: Gas tinggi!");
+    Serial.println("PERINGATAN: Suhu terlalu dingin, mengaktifkan led");
   }
   else {
     digitalWrite(LED_PIN, LOW);
@@ -86,7 +87,7 @@ void loop() {
   // ======================
   // Kontrol Servo
   // ======================
-  if (suhu > BATAS_SUHU || gasValue > BATAS_GAS) {
+  if (suhu > BATAS_SUHU_PANAS || gasValue > BATAS_GAS) {
 
     ventilasi.write(90);
 
