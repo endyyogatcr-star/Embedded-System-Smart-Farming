@@ -25,7 +25,6 @@ float kelembaban;
 int gasValue;
 
 // Ambang batas
-const float BATAS_SUHU_PANAS = 30.0;
 const float BATAS_SUHU_DINGIN = 15.0;
 const int BATAS_GAS = 500;
 
@@ -62,6 +61,7 @@ void loop() {
   // Tampilkan Data
   // ======================
   Serial.println("---------------");
+
   Serial.print("Suhu       : ");
   Serial.print(suhu);
   Serial.println(" °C");
@@ -74,29 +74,24 @@ void loop() {
   Serial.println(gasValue);
 
   // ======================
-  // Kontrol LED
+  // DHT22 Mengontrol LED
   // ======================
-  if (suhu > BATAS_SUHU_DINGIN) {
+  if (suhu < BATAS_SUHU_DINGIN) {
     digitalWrite(LED_PIN, HIGH);
-    Serial.println("PERINGATAN: Suhu terlalu dingin, mengaktifkan led");
-  }
-  else {
+    Serial.println("LED ON (Suhu terlalu dingin)");
+  } else {
     digitalWrite(LED_PIN, LOW);
+    Serial.println("LED OFF");
   }
 
   // ======================
-  // Kontrol Servo
+  // Sensor Gas Mengontrol Servo
   // ======================
-  if (suhu > BATAS_SUHU_PANAS || gasValue > BATAS_GAS) {
-
+  if (gasValue > BATAS_GAS) {
     ventilasi.write(90);
-
-    Serial.println("Ventilasi TERBUKA");
-  }
-  else {
-
+    Serial.println("Ventilasi TERBUKA (Gas tinggi)");
+  } else {
     ventilasi.write(0);
-
     Serial.println("Ventilasi TERTUTUP");
   }
 
